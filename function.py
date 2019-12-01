@@ -8,6 +8,10 @@ import sys
 import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image, ImageFilter
+from keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import img_to_array
+from keras.preprocessing.image import load_img
+import argparse
 
 
 def readimage(p,detector,predictor,width,color,msshow,
@@ -320,4 +324,50 @@ def trainmodel(mserror,repart,renum,eye,nose,face,landmark,train,test,opt,tree,n
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
+def imagejitter(default,msload,rotation,zoom,width,height,shear,status,mode,
+                total,msgenerat,file):
+
+    # construct the argument parser and parse the arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-i", "--image", required=True,
+	    help="path to the input image")
+    ap.add_argument("-o", "--output", required=True,
+	    help="path to output directory to store augmentation examples")
+    ap.add_argument("-t", "--total", type=int, default=default,
+	    help="# of training samples to generate")
+    args = vars(ap.parse_args())
+
+    # load the input image, convert it to a NumPy array, and then
+    # reshape it to have an extra dimension
+    print(msload)
+    image = load_img(args["image"])
+    image = img_to_array(image)
+    image = np.expand_dims(image, axis=0)
+
+    # construct the image generator for data augmentation then
+    # initialize the total number of images generated thus far
+    aug = ImageDataGenerator(
+	    rotation_range = rotation,
+	    zoom_range = zoom,
+	    width_shift_range = width,
+	    height_shift_range = height,
+	    shear_range = shear,
+	    horizontal_flip = status,
+	    fill_mode = mode)
+    total = total
+
+    # construct the actual Python generator
+    print(msgenerat)
+    imageGen = aug.flow(image, batch_size=1, save_to_dir=args["output"],
+	    save_prefix="image", save_format=file)
+
+    # loop over examples from our image data augmentation generator
+    for image in imageGen:
+	    # increment our counter
+	    total += 1
+
+	    # if we have reached the specified number of examples, break
+	    # from the loop
+	    if total == args["total"]:
+		    break
 

@@ -11,17 +11,17 @@ width = 500;
 #color
 color = cv2.COLOR_BGR2GRAY;
 #key exit
-keyq = ('q')
+keyq = ('q');
 #key save image landmark
-keyl = ('l')
+keyl = ('l');
 #print error model
-mserror = "error of the model: {} is {}"
+mserror = "error of the model: {} is {}";
 #message imshow
-msshow = "output"
+msshow = "output";
 #message count face
-face = "face #{}"
+face = "face #{}";
 #chang File extension
-extension = ".jpg"
+extension = ".jpg";
 
 
 #functuion readimage
@@ -70,7 +70,7 @@ extension = ".jpg"
     msshow,
     keyd = ('d'),                    #key save image detection
     read = cv2.VideoCapture(0),
-    id = 100,                        #img_id
+    id = 1,                          #img_id
     iwd = "picture/detection/de.",   #imwrite image detection
     iwl = "picture/landmark/la."     #imwrite image landmark
 
@@ -122,6 +122,24 @@ extension = ".jpg"
     ostranslation = 0,                                      #options.oversampling_translation_jitter
     be = True,                                              #options.be_verbose
     nthreads = 1,                                           #options.num_threads
-    namemodel = "face_landmarks_",                      #model name
+    namemodel = "face_landmarks_68"                         #model name
     
     );"""
+
+#function imagejitter
+ # python home.py --image t1.jpg --output generated_dataset/data
+"""function.imagejitter(
+    default = 100,                                     #default
+    msload = "[INFO] loading example image...",        #message load the input image
+    rotation = 0.2,                                    #rotation_range      
+    zoom = 0.10,                                       #zoom_range
+    width = 0.1,                                       #width_shift_range
+    height = 0.1,                                      #height_shift_range
+    shear = 0.10,                                      #shear_range
+    status = True,                                     #horizontal_flip
+    mode = "nearest",                                  #fill_mode 
+    total = 0,                                         #total
+    msgenerat = "[INFO] generating images...",         #message generator
+    file = "jpg"                                       #save_format 
+
+);"""
